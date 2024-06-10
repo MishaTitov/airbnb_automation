@@ -41,7 +41,7 @@ namespace HomeAssignment.Pages
         }
 
 
-        public async Task ClickCheckIn(string checkInDate = "calendar-day-05/30/2024")
+        public async Task ClickCheckIn(string checkInDate = "calendar-day-06/30/2024")
         {
             //Click on relevent CheckIn date,TODO search for dates
             await _checkInInput.ClickAsync();
@@ -49,7 +49,7 @@ namespace HomeAssignment.Pages
             await _page.GetByTestId(checkInDate).ClickAsync();
         }
 
-        public async Task ClickCheckOut(string checkOutDate = "calendar-day-06/10/2024")
+        public async Task ClickCheckOut(string checkOutDate = "calendar-day-07/10/2024")
         {
             //Click on relevent CheckOut date,TODO search for dates
             await _checkOutInput.ClickAsync();

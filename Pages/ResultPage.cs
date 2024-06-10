@@ -11,6 +11,7 @@ namespace HomeAssignment.Pages
         public ResultPage(IPage page)
         {
             _page = page;
+            //REFACTOR
             _nextButton = _page.Locator("//*[@id=\"site-content\"]/div/div[3]/div/div/div/nav/div/a[5]");
         }
 
@@ -24,18 +25,23 @@ namespace HomeAssignment.Pages
         {
             // Scan for prices with price limit and click on first relevant apartament
             bool findFlag = false;
+            int price;
             var el = _page.GetByTestId("price-availability-row").Nth(0);
             for (int i = 1; i < 18; i++)
             {
                 var text = await el.TextContentAsync();
                 Console.WriteLine($"[{i}] {text}");
-                int price = HomeAssignmentUtils.GetPriceFromString(text);
+                if (text != null)
+                    price = HomeAssignmentUtils.GetPriceFromString(text);
+                else
+                    price = priceLimit + 1;
                 Console.WriteLine(price);
                 
                 if (price < priceLimit)
                 {
                     findFlag = true;
-                    await _page.GetByTestId("card-container").Filter(new() { Has = el }).ClickAsync();
+                    await _page.GetByTestId("card-container").Filter(new() { HasText = price.ToString() }).ClickAsync();
+                    //await _page.GetByTestId("card-container").Filter(new() { Has = el }).ClickAsync();
                     break;
                 }
 
@@ -44,18 +50,23 @@ namespace HomeAssignment.Pages
             return findFlag;
         }
 
-        public async Task<ILocator> ScanPricesAndGetLocator(int priceLimit = 500)
+        public async Task<ILocator?> ScanPricesAndGetLocator(int priceLimit = 500)
         {
             // Scan for prices with price limit and click on first relevant apartament
             var el = _page.GetByTestId("price-availability-row").Nth(0);
+            int price;
             for (int i = 1; i < 18; i++)
             {
                 var text = await el.TextContentAsync();
-                int price = HomeAssignmentUtils.GetPriceFromString(text);
+                if (text != null)
+                    price = HomeAssignmentUtils.GetPriceFromString(text);
+                else
+                    price = priceLimit + 1;
 
                 if (price < priceLimit)
                 {
-                    return  _page.GetByTestId("card-container").Filter(new() { Has = el });                    
+                    return _page.GetByTestId("card-container").Filter(new() { HasText = price.ToString() });
+                    //return  _page.GetByTestId("card-container").Filter(new() { Has = el });                    
                 }
 
                 el = _page.GetByTestId("price-availability-row").Nth(i);

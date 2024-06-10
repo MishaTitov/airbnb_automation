@@ -9,5 +9,10 @@
             string tmpPrice = string.Join("", text.Split("night")[1].Where(Char.IsDigit));
             return Int32.Parse(tmpPrice);
         }
+
+        public static int GetNumberFromString(string text)
+        {
+            return Int32.Parse(text.Where(Char.IsDigit).ToArray());
+        }
     }
 }

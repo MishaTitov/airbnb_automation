@@ -1,4 +1,5 @@
-﻿using Microsoft.Playwright;
+﻿using HomeAssignment.Utils;
+using Microsoft.Playwright;
 
 namespace HomeAssignment.Pages
 {
@@ -9,17 +10,19 @@ namespace HomeAssignment.Pages
 
         public ApartmentPage (IPage page)
         {
-            Console.WriteLine("constructor");
             _page = page;
-            _cleaningFee = _page.Locator("//*[@id=\"site-content\"]/div/div[1]/div[3]/div/div[2]/div/div/div[1]/div/div/div/div/div/div/div/div[3]/div/section/div[1]/div[2]");
+            _cleaningFee = _page.Locator("div._tr4owt").Filter(new() { HasText = "Cleaning fee"});
         }
 
-        public async Task CheckCleaningFee(int limitFee = 500)
+        public async Task<int?> CheckCleaningFee(int limitFee = 500)
         {
             //Check cleaning fee according to limit on page
-            Console.WriteLine(await _cleaningFee.TextContentAsync());
-            var el = _page.Locator("//*[@id=\"site-content\"]/div/div[1]/div[3]/div/div[2]/div/div/div[1]/div/div/div/div/div/div/div/div[3]/div/section/div[1]/div[2]");
-            Console.WriteLine(await el.TextContentAsync());
+            var tmpText = await _cleaningFee.TextContentAsync();
+            if (tmpText != null)
+            {
+                return HomeAssignmentUtils.GetNumberFromString(tmpText);
+            }
+            return null;
         }
     }
 }
