@@ -63,7 +63,7 @@ namespace HomeAssignment.Tests
                 ApartmentPage apartmentPage = new ApartmentPage(newPage);
                 var cleaningFee = await apartmentPage.CheckCleaningFee();
 
-
+                //Check if cleaning fee less than 500
                 Assert.That(cleaningFee, Is.AtMost(500), "Cleaning Fee is greater than 500");
 
                 //Screenshots
