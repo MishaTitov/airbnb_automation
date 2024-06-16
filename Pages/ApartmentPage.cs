@@ -14,9 +14,9 @@ namespace HomeAssignment.Pages
             _cleaningFee = _page.Locator("div._tr4owt").Filter(new() { HasText = "Cleaning fee"});
         }
 
-        public async Task<int?> CheckCleaningFee(int limitFee = 500)
+        public async Task<int?> CheckCleaningFee()
         {
-            //Check cleaning fee according to limit on page
+            //Return cleaning fee
             var tmpText = await _cleaningFee.TextContentAsync();
             if (tmpText != null)
             {
